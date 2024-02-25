@@ -1,12 +1,11 @@
 meta:
   name: "pcapctl ping 8.8.8.8"
-  harbours:
-      - pcapctl
+  harbours: []
 
 tasks:
   - boot
   - name: Starting the dumping to file data.pcap
-    command: 
+    command:
       args: "pcapctl start /tmp/data.pcap"
       assert: "Using device: devices/\hw\sys\\00:03.0\\port0"
   - name: Checking the file was created.
