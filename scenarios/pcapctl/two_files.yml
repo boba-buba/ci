@@ -7,38 +7,43 @@ tasks:
   - name: Starting the dumping to file data.pcap.
     command:
       args: "pcapctl start /tmp/data.pcap"
-      assert: "Using device: devices/\hw\sys\\00:03.0\\port0"
+      assert: "Using device: devices\/\\hw\\sys\\00:03.0\\port0"
   - name: Checking the file was created.
     command:
       args: "ls /tmp"
       assert: "data.pcap"
   - name: Ping 8.8.8.8 must go to /tmp/data.pcap.
-      command: "ping 8.8.8.8"
+    command: "ping 8.8.8.8"
   - name: Checking the file has size 332B
-      command: "ls -e /tmp"
+    command: 
+      args: " ls -e /tmp"
       assert: "332"
   - name: Starting dumping again, must close and save /tmp/data.pcap and create new file.
-      command:
-        args: "pcaptl start /tmp/data2.pcap"
-        assert: "Using device: devices/\hw\sys\\00:03.0\\port0"
+    command:
+      args: "pcapctl start /tmp/data2.pcap"
+      assert: "Using device: devices\/\\hw\\sys\\00:03.0\\port0"
   - name: Checking there are two files in /tmp.
-      command:
-        args: "ls /tmp"
-        assert: "data.pcap\ndata2.pcap"
+    command:
+      args: "ls /tmp"
+      assert: "data.pcap"
+      assert: "data2.pcap"
   - name: Ping 8.8.8.8 must go to /tmp/data2.pcap and /tmp/data.pcap should not change.
-      command: "ping 8.8.8.8"
+    command: "ping 8.8.8.8"
   - name: Checking /tmp/data2.pcap has size 176 and /tmp/data.pcap has size 332.
-      command:
-        args: "ls -e /tmp"
-        assert: "332\n176"
+    command:
+      args: " ls -e /tmp"
+      assert: "332"
+      assert: "176"
   - name: Stopping dumping.
-      command:
-        args: "pcapctl stop"
-        assert: "Using device: devices/\hw\sys\\00:03.0\\port0\nDumping was stopped"
+    command:
+      args: "pcapctl stop"
+      assert: "Using device: devices\/\\hw\\sys\\00:03.0\\port0"
+      assert: "Dumping was stopped"
   - name: Ping 8.8.8.8 again, files should not change
-      command: "ping 8.8.8.8"
+    command: "ping 8.8.8.8"
   - name: Checking file has the same size.
     command:
-      args: "ls -e /tmp"
-      assert: "332\n176"
+      args: " ls -e /tmp"
+      assert: "332"
+      assert: "176"
 
