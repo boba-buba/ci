@@ -6,8 +6,7 @@ tasks:
   - boot
   - name: Starting the dumping to file data.pcap
     command:
-      args: "pcapctl start /tmp/data.pcap"
-      assert: "Using device: devices\/\\hw\\sys\\00:03.0\\port0"
+      args: "pcapctl start devices/\\hw\\sys\\00:03.0\\port0 /tmp/data.pcap"
   - name: Checking the file was created.
     command:
       args: "ls /tmp"
@@ -16,12 +15,11 @@ tasks:
     command: "ping 8.8.8.8"
   - name: Checking file has right size
     command:
-      args: " ls -e /tmp"
+      args: "ls -e /tmp"
       assert: "332"
   - name: Stopping the dumping.
     command:
-      args: "pcapctl stop"
-      assert: "Using device: devices\/\\hw\\sys\\00:03.0\\port0"
+      args: "pcapctl stop devices\/\\hw\\sys\\00:03.0\\port0"
       assert: "Dumping was stopped"
   - name: Ping 8.8.8.8 again, file should not change
     command: "ping 8.8.8.8"
