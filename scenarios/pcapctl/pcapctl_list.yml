@@ -1,0 +1,12 @@
+meta:
+  name: "pcapctl list devices"
+  harbours: []
+
+tasks:
+  - boot
+  - name: List accessible devices.
+    command:
+      args: "pcapctl --list"
+      assert: "Devices:"
+  - name: List inetd addrs
+    command: "inet list-addr"

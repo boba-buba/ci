@@ -1,0 +1,55 @@
+meta:
+  name: "pcapctl trying long user friendly options for starting dumping."
+  harbours: []
+tasks:
+  - boot
+  - name: Starting the dumping to file data.pcap.
+    command:
+      args: "pcapctl --new /tmp/data.pcap"
+      assert: "Start dumping on device - 0, ops - 0."
+  - name: Checking the file was created.
+    command:
+      args: "ls /tmp"
+      assert: "data.pcap"
+  - name: Ping 8.8.8.8 must go to /tmp/data.pcap.
+    command: "ping 8.8.8.8"
+  - name: Checking the file has size 332B
+    command:
+      args: " ls -e /tmp"
+      assert: "332"
+  - name: Stopping dumping.
+    command:
+      args: "pcapctl -t -d 0"
+  - name: Continue dumping to file /tmp/data.pcap.
+    command:
+      args: "pcapctl --append /tmp/data.pcap"
+      assert: "Start dumping on device - 0, ops - 2."
+  - name: Ping 8.8.8.8 must go to /tmp/data.pcap.
+    command: "ping 8.8.8.8"
+  - name: Checking the file has size 332B
+    command:
+      args: " ls -e /tmp"
+      assert: "484"
+  - name: Stopping dumping.
+    command:
+      args: "pcapctl -t -d 0"
+  - name: Remove /tmp/data.pcap
+    command: "rm /tmp /data.pcap"
+  - name: Start dumping to file /tmp/data2.pcap with short ops.
+    command:
+      args: "pcapctl --truncated /tmp/data2.pcap"
+      assert: "Start dumping on device - 0, ops - 1."
+  - name: Ping to 8.8.8.8
+    command:
+      args: "ping 8.8.8.8"
+  - name: dns resolve www.googl.com
+    command:
+      args: "dnsres -4 www.google.com"
+  - name: Stop dumping.
+    command:
+      args: "pcapctl -t -d 0"
+      assert: "Stop dumping on device - 0."
+  - name: Assert /tmp/data2.pcap has size 480B.
+    command:
+      args: " ls -e /tmp"
+      assert: "480"

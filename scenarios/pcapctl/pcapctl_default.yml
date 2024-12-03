@@ -1,12 +1,13 @@
 meta:
-  name: "pcapctl ping 8.8.8.8"
+  name: "pcapctl starting/stopping without specifying ops and device, must use default."
   harbours: []
 
 tasks:
   - boot
   - name: Starting the dumping to file data.pcap
     command:
-      args: "pcapctl start devices/\\hw\\sys\\00:03.0\\port0 /tmp/data.pcap"
+      args: "pcapctl -r -o /tmp/data.pcap"
+      assert: "Start dumping on device - 0, ops - 0."
   - name: Checking the file was created.
     command:
       args: "ls /tmp"
@@ -15,12 +16,12 @@ tasks:
     command: "ping 8.8.8.8"
   - name: Checking file has right size
     command:
-      args: "ls -e /tmp"
+      args: " ls -e /tmp"
       assert: "332"
   - name: Stopping the dumping.
     command:
-      args: "pcapctl stop devices\/\\hw\\sys\\00:03.0\\port0"
-      assert: "Dumping was stopped"
+      args: "pcapctl -t"
+      assert: "Stop dumping on device - 0."
   - name: Ping 8.8.8.8 again, file should not change
     command: "ping 8.8.8.8"
   - name: Checking file has the same size.

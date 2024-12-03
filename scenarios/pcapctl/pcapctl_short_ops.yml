@@ -1,0 +1,30 @@
+meta:
+  name: "pcapctl short ops ping 8.8.8.8"
+  harbours: []
+
+tasks:
+  - boot
+  - name: Starting the dumping to file data.pcap
+    command:
+      args: "pcapctl -r -d 0 -p 0 -o /tmp/data.pcap"
+      assert: "Start dumping on device - 0, ops - 0."
+  - name: Checking the file was created.
+    command:
+      args: "ls /tmp"
+      assert: "data.pcap"
+  - name: Ping 8.8.8.8 must go to file
+    command: "ping 8.8.8.8"
+  - name: Checking file has right size
+    command:
+      args: " ls -e /tmp"
+      assert: "332"
+  - name: Stopping the dumping.
+    command:
+      args: "pcapctl -t -d 0"
+      assert: "Stop dumping on device - 0."
+  - name: Ping 8.8.8.8 again, file should not change
+    command: "ping 8.8.8.8"
+  - name: Checking file has the same size.
+    command:
+      args: " ls -e /tmp"
+      assert: "332"
