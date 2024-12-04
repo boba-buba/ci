@@ -82,13 +82,14 @@ class QemuVMController(VMController):
         'ocr.sed'
     )
 
-    def __init__(self, arch, name, config_ignored, boot_image, disk_image):
+    def __init__(self, arch, name, config_ignored, boot_image, disk_image, two_drvs):
         VMController.__init__(self, 'QEMU-' + arch)
         self.arch = arch
         self.booted = False
         self.name = name
         self.boot_image = boot_image
         self.disk_image = disk_image
+        self.two_drvs = two_drvs
 
     def is_supported(arch):
         return arch in QemuVMController.config
@@ -136,6 +137,17 @@ class QemuVMController(VMController):
             elif opt == '{MEMORY}':
                 opt = '{}'.format(self.memory)
             cmd.append(opt)
+        if self.two_drvs:
+            cmd.append("-device")
+            cmd.append("ne2k_isa,irq=5,netdev=n2")
+            cmd.append('-netdev')
+            cmd.append('user,id=n2,net=192.168.76.0/24')
+
+            cmd.append('-device')
+            cmd.append('e1000,netdev=n1')
+            cmd.append('-netdev')
+            cmd.append('user,id=n1')
+
         if self.disk_image is not None:
             cmd.append('-drive')
             cmd.append('file={},index=0,media=disk,format=raw'.format(self.disk_image))
@@ -147,6 +159,7 @@ class QemuVMController(VMController):
         for opt in self.extra_options:
             cmd.append(opt)
         self.logger.debug("Starting QEMU: {}".format(format_command(cmd)))
+
 
         self.proc = subprocess.Popen(cmd)
         self.monitor = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -162,6 +175,7 @@ class QemuVMController(VMController):
                 raise Exception("QEMU not started, aborting.")
 
         self.booted = True
+        #self.logger.info(cmd)
         self.logger.info("Machine started.")
 
         # Skip past GRUB

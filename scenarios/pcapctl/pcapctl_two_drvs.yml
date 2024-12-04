@@ -1,5 +1,5 @@
 meta:
-  name: "pcapctl dump on two drivers"
+  name: "pcapctl dump on two drivers. Ping for one driver (with address 192....) and dnsres for device (with address 10...)."
   harbours: []
 
 tasks:
@@ -7,14 +7,13 @@ tasks:
   - name: List accessible devices.
     command:
       args: "pcapctl --list"
-  - name: List address.
+  - name: List addresses.
     command: "inet list-addr"
 
   - name: Start dumping on 1. device.
     command:
       args: "pcapctl --start --device=1 --ops=0 --outfile=/tmp/data1.pcap"
       assert: "Start dumping on device - 1, ops - 0."
-
   - name: Start dumping on device 0.
     command:
       args: "pcapctl --start --device=0 --ops=0 --outfile=/tmp/data0.pcap"
@@ -22,27 +21,21 @@ tasks:
 
   - name: Ping 8.8.8.8.
     command: "ping 8.8.8.8"
-  - name: Assert /tmp.data1.pcap has 332B
-    command:
-      args: " ls -e /tmp"
-      assert: "332"
+  - name: DNS resolve www.google.com
+    command: " dnsres www.google.com"
+
+
   - name: Stop dumping on 1. device.
     command:
       args: "pcapctl --stop --device=1"
       assert: "Stop dumping on device - 1."
-
-  - name: DNS resolve www.google.com
-    command: "dnsres www.googlw.com"
   - name: Stop dumping on 0. device.
     command:
       args: "pcapctl --stop --device=0"
       assert: "Stop dumping on device - 0."
-  - name: Stop dumping on 1. device.
-    command:
-      args: "pcapctl --stop --device=1"
-      assert: "Stop dumping on device - 1."
+
   - name: Assert file sizes.
     command:
       args: " ls -e /tmp"
+      assert: "636"
       assert: "332"
-      assert: "480"

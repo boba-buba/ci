@@ -37,7 +37,7 @@ class VMManager:
     Keeps track of running virtual machines.
     """
 
-    def __init__(self, controller, architecture, vm_config, boot_image, disk_image, memory_amount, headless, extra_opts):
+    def __init__(self, controller, architecture, vm_config, boot_image, disk_image, memory_amount, headless, extra_opts, two_drvs):
         self.controller_class = controller
         self.architecture = architecture
         self.vm_config = vm_config
@@ -46,16 +46,18 @@ class VMManager:
         self.memory_amount = memory_amount
         self.headless = headless
         self.extra_options = extra_opts
+        self.two_drvs = two_drvs
         self.instances = {}
         self.last = None
 
     def create(self, name):
         if name in self.instances:
             raise Exception("Duplicate machine name {}.".format(name))
-        self.instances[name] = self.controller_class(self.architecture, name, self.vm_config, self.boot_image, self.disk_image)
+        self.instances[name] = self.controller_class(self.architecture, name, self.vm_config, self.boot_image, self.disk_image, self.two_drvs)
         self.instances[name].memory = self.memory_amount
         self.instances[name].is_headless = self.headless
         self.instances[name].extra_options = self.extra_options
+        self.instances[name].two_drvs = self.two_drvs
         self.last = name
         return self.instances[name]
 

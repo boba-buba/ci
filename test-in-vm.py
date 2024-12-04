@@ -122,7 +122,12 @@ args.add_argument('--debug',
     action='store_true',
     help='Print debugging messages'
 )
-
+args.add_argument('--two_network_drvs',
+    dest='two_drvs',
+    default=False,
+    help='Specify if HelenOS will run with two network drivers e1000 and ne2k',
+    action='store_true',
+)
 config = args.parse_args()
 
 if config.debug:
@@ -157,7 +162,7 @@ if controller is None:
     logger.error("Unsupported architecture {}.".format(config.architecture))
     sys.exit(1)
 
-vmm = VMManager(controller, config.architecture, config.vm_config, config.boot_image, config.disk_image, config.memory, config.headless, config.pass_thru_options)
+vmm = VMManager(controller, config.architecture, config.vm_config, config.boot_image, config.disk_image, config.memory, config.headless, config.pass_thru_options, config.two_drvs)
 
 scenario_tasks = []
 for t in scenario['tasks']:
