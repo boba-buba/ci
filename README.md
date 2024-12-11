@@ -46,6 +46,7 @@ usage: test-in-vm.py [-h] [--headless] [--scenario FILENAME.yml] --arch
                      ARCHITECTURE [--memory MB] --image FILENAME
                      [--pass OPTION] [--vterm-dump FILENAME.txt]
                      [--last-screenshot FILENAME.png] [--debug]
+                     [--two_network_drvs]
 
 Testing of HelenOS in VM
 
@@ -63,6 +64,7 @@ optional arguments:
   --last-screenshot FILENAME.png
                         Where to store last screenshot.
   --debug               Print debugging messages
+  --two_network_drvs    Specify if HelenOS will run with two network drivers e1000 and ne2k.
 
 Typical invocation will use the following arguments:
   --image helenos.iso

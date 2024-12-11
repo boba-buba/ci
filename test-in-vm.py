@@ -125,7 +125,7 @@ args.add_argument('--debug',
 args.add_argument('--two_network_drvs',
     dest='two_drvs',
     default=False,
-    help='Specify if HelenOS will run with two network drivers e1000 and ne2k',
+    help='Specify if HelenOS will run with two network drivers e1000 and ne2k.',
     action='store_true',
 )
 config = args.parse_args()

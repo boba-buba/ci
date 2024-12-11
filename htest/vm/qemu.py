@@ -138,15 +138,8 @@ class QemuVMController(VMController):
                 opt = '{}'.format(self.memory)
             cmd.append(opt)
         if self.two_drvs:
-            cmd.append("-device")
-            cmd.append("ne2k_isa,irq=5,netdev=n2")
-            cmd.append('-netdev')
-            cmd.append('user,id=n2,net=192.168.76.0/24')
-
-            cmd.append('-device')
-            cmd.append('e1000,netdev=n1')
-            cmd.append('-netdev')
-            cmd.append('user,id=n1')
+            cmd.append(['-device', 'ne2k_isa,irq=5,netdev=n2', '-netdev', 'user,id=n2,net=192.168.76.0/24'])
+            cmd.append(['-device', 'e1000,netdev=n1', '-netdev', 'user,id=n1'])
 
         if self.disk_image is not None:
             cmd.append('-drive')

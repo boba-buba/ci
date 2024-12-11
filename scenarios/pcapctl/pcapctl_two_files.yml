@@ -19,6 +19,7 @@ tasks:
   - name: Trying to start dumping to second file without closing first. New File must not be created and dumping to first file must not be impacted in any way.
     command:
       args: "pcapctl --start --device=0 --ops=0 --outfile=/tmp/data2.pcap"
+      assert: "Starting the dumping was not successful."
   - name: Checking there is only one file in /tmp.
     command:
       args: "ls /tmp"
@@ -32,7 +33,7 @@ tasks:
       assert: "484"
   - name: Stopping dumping.
     command:
-      args: "pcapctl -t -d 0"
+      args: "pcapctl --stop --device=0"
   - name: Ping 8.8.8.8 again, file /tmp/data.pcap should not change.
     command: "ping 8.8.8.8"
   - name: Checking file has the same size.
