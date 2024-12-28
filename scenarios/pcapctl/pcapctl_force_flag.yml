@@ -1,5 +1,5 @@
 meta:
-  name: "pcapctl trying start dumpin g to already existing file."
+  name: "pcapctl trying start dumping to already existing file."
   harbours: []
 tasks:
   - boot
