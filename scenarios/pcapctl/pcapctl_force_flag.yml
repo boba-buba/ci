@@ -17,7 +17,7 @@ tasks:
   - name: Starting the dumping to file data.pcap.
     command:
       args: "pcapctl --start --device=0 --ops=0 --outfile=/tmp/data.pcap"
-      assert: "File /tmp/data.pcap already exists. If you want to overwrite it, then use flag --force."
+      assert: "File /tmp/data.pcap already exists. If you want to overwrite it, then use flag -"
   - name: Start dumping with force flag.
     command:
       args: "pcapctl --start --device=0 --ops=0 --force --outfile=/tmp/data.pcap"

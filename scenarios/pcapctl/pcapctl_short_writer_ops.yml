@@ -16,7 +16,7 @@ tasks:
   - name: Stopping dumping.
     command:
       args: "pcapctl --stop --device=0"
-      assert: "Stop dumping on dvice - 0."
+      assert: "Stop dumping on device - 0."
   - name: Ping 8.8.8.8 again, file /tmp/data.pcap should not change.
     command: "ping 8.8.8.8"
   - name: Checking file has the same size.

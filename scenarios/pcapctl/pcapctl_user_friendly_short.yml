@@ -34,7 +34,7 @@ tasks:
     command:
       args: "pcapctl -t -d 0"
   - name: Remove /tmp/data.pcap
-    command: "rm /tmp /data.pcap"
+    command: "rm /tmp/data.pcap"
   - name: Start dumping to file /tmp/data2.pcap with short ops.
     command:
       args: "pcapctl -T /tmp/data2.pcap"
@@ -44,7 +44,7 @@ tasks:
       args: "ping 8.8.8.8"
   - name: dns resolve www.googl.com
     command:
-      args: "dnsres -4 www.google.com"
+      args: " dnsres -4 www.google.com"
   - name: Stop dumping.
     command:
       args: "pcapctl -t -d 0"
